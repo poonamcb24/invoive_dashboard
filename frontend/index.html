@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice Dashboard</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Invoice Dashboard</h1>
+      <div class="filters">
+        <label>
+          Customer
+          <select id="customerFilter">
+            <option value="">All</option>
+          </select>
+        </label>
+        <label>
+          From
+          <input type="date" id="fromDate"/>
+        </label>
+        <label>
+          To
+          <input type="date" id="toDate"/>
+        </label>
+        <button id="applyFilters">Apply</button>
+        <input id="searchBox" placeholder="Search invoices or customer"/>
+      </div>
+    </header>
+
+    <section class="kpis">
+      <div class="kpi-card">
+        <div class="kpi-title">Total Invoiced</div>
+        <div class="kpi-value" id="kpiInvoiced">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Total Received</div>
+        <div class="kpi-value" id="kpiReceived">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Outstanding</div>
+        <div class="kpi-value" id="kpiOutstanding">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">% Overdue</div>
+        <div class="kpi-value" id="kpiOverdue">0%</div>
+      </div>
+    </section>
+
+    <section class="table-section">
+      <div class="table-actions">
+        <span>Invoices</span>
+        <div>
+          <label>Sort by
+            <select id="sortBy">
+              <option value="invoice_date">Invoice Date</option>
+              <option value="invoice_no">Invoice No</option>
+              <option value="customer_name">Customer</option>
+              <option value="due_date">Due Date</option>
+              <option value="amount_total">Amount</option>
+              <option value="status">Status</option>
+              <option value="outstanding">Outstanding</option>
+            </select>
+          </label>
+          <select id="sortOrder">
+            <option value="desc">Desc</option>
+            <option value="asc">Asc</option>
+          </select>
+        </div>
+      </div>
+
+      <table id="invoiceTable">
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Customer</th>
+            <th>Invoice Date</th>
+            <th>Due Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Outstanding</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="chart-section">
+      <div class="chart-header">
+        <select id="chartMode">
+          <option value="top">Top 5 Customers by Outstanding</option>
+          <option value="monthly">Monthly Invoiced vs Received</option>
+        </select>
+      </div>
+      <canvas id="chartCanvas" height="130"></canvas>
+    </section>
+  </div>
+
+  
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Record Payment</h3>
+        <button id="closeModal">×</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="payInvoiceId"/>
+        <div class="field">
+          <label>Amount</label>
+          <input type="number" id="payAmount" step="0.01" min="0"/>
+        </div>
+        <div class="field">
+          <label>Payment Date</label>
+          <input type="date" id="payDate"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="savePayment">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "http://127.0.0.1:9090";
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
